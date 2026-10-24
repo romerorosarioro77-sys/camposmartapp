@@ -19,6 +19,8 @@ jobs:
       - run: |
           npx cap add android
           npx cap sync android
+      - name: Generar icono y pantalla de inicio con el logo
+        run: npx --yes @capacitor/assets@3.0.5 generate --android
       - run: |
           mkdir -p ~/.android
           cp debug.keystore ~/.android/debug.keystore
