@@ -1,0 +1,13 @@
+{
+  "appId": "com.camposmart.app",
+  "appName": "CampoSmart",
+  "webDir": "camposmart",
+  "android": {
+    "allowMixedContent": true
+  },
+  "server": {
+    "androidScheme": "http",
+    "hostname": "localhost",
+    "cleartext": true
+  }
+}

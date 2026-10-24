@@ -1,0 +1,385 @@
+:root {
+    --bg-principal: #070907;
+    --bg-tarjetas: #101410;
+    --verde-primario: #00ff55;
+    --verde-institucional: #00cc44;
+    --verde-degrade: #003a14;
+    --texto-blanco: #ffffff;
+    --texto-gris: #9ca3af;
+    --rojo-operativo: #ef4444;
+    --amarillo-alerta: #f59e0b;
+    --azul-caja: #3b82f6;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-principal);
+    color: var(--texto-blanco);
+    padding-bottom: 40px;
+}
+
+/* Encabezado Corporativo */
+header {
+    background: linear-gradient(135deg, var(--bg-tarjetas) 0%, var(--verde-degrade) 100%);
+    padding: 15px 20px;
+    border-bottom: 2px solid var(--verde-primario);
+    box-shadow: 0 4px 20px rgba(0, 255, 85, 0.15);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* --- CONFIGURACIÓN DE IMÁGENES CORPORATIVAS (CARPETA IMG) --- */
+
+/* Contenedor del Logo CampoSmart */
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Estilo para la imagen del logo.png */
+.logo-app {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+    filter: drop-shadow(0px 2px 6px rgba(0, 255, 85, 0.3));
+}
+
+.logo-area h1 {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #ffffff 60%, #9ca3af 100%);
+   background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.logo-area h1 span {
+    background: linear-gradient(135deg, var(--verde-primario) 0%, #009933 100%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+}
+
+/* Contenedor del Perfil de Nelson */
+.perfil-usuario {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(16, 20, 16, 0.6) 0%, rgba(0, 0, 0, 0.8) 100%);
+    padding: 6px 14px;
+    border-radius: 30px;
+    border: 1px solid #1a241a;
+}
+
+/* Estilo para la foto de perfil foto.png */
+.perfil-foto-real {
+    width: 38px;
+    height: 38px;
+    object-fit: cover; /* Asegura que la foto no se deforme si no es perfectamente cuadrada */
+    border-radius: 50%;
+    border: 2px solid var(--verde-primario);
+    box-shadow: 0 0 8px rgba(0, 255, 85, 0.3);
+}
+
+/* Sistema de Navegación Táctil Móvil */
+.nav-modulos {
+    display: flex;
+    overflow-x: auto;
+    background-color: #050705;
+    border-bottom: 1px solid #161e16;
+    scrollbar-width: none;
+}
+.nav-modulos::-webkit-scrollbar { display: none; }
+
+.tab-trigger {
+    flex: 1;
+    min-width: 90px;
+    padding: 14px 8px;
+    background: none;
+    border: none;
+    color: var(--texto-gris);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.tab-trigger i { font-size: 1.15rem; }
+
+.tab-trigger.active {
+    color: var(--verde-primario);
+    background-color: var(--bg-tarjetas);
+    border-bottom: 3px solid var(--verde-primario);
+}
+
+main {
+    max-width: 680px;
+    margin: 15px auto;
+    padding: 0 12px;
+}
+
+.modulo-contenedor { display: none; }
+.modulo-contenedor.active { display: block; }
+
+.card {
+    background-color: var(--bg-tarjetas);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 16px;
+    border: 1px solid #141c14;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+h2 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--verde-primario);
+    border-bottom: 1px solid #1a241a;
+    padding-bottom: 8px;
+}
+
+/* Inputs y Selectores Rurales */
+.grid-formulario {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+@media (min-width: 480px) {
+    .grid-formulario.dual { grid-template-columns: 1fr 1fr; }
+}
+
+.grupo-campo { display: flex; flex-direction: column; }
+
+label {
+    font-size: 0.75rem;
+    color: var(--texto-gris);
+    margin-bottom: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 14px;
+    background-color: #040604;
+    border: 1px solid #222e22;
+    border-radius: 8px;
+    color: white;
+    font-size: 0.95rem;
+    transition: all 0.25s;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--verde-primario);
+    box-shadow: 0 0 8px rgba(0, 255, 85, 0.2);
+    outline: none;
+}
+
+/* Botones Ergonómicos */
+.btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--verde-institucional) 0%, var(--verde-degrade) 100%);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.btn:active { transform: scale(0.98); }
+.btn-cancelar { background: #222; border: 1px solid #333; }
+.btn-excel { background: linear-gradient(135deg, #1e6b3f 0%, #0a331c 100%); }
+
+/* Grid del Dashboard de Existencias */
+.grid-dashboard {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.dash-bloque {
+    background: #151b15;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    border-left: 4px solid var(--verde-primario);
+}
+
+.dash-bloque.completo {
+    grid-column: span 2;
+    background: linear-gradient(90deg, #121e12 0%, #070a07 100%);
+}
+
+.dash-cifra { font-size: 1.6rem; font-weight: bold; color: white; margin-top: 4px; }
+
+/* Tarjetas de Renderizado de Animales */
+.item-ganado {
+    background-color: #090c09;
+    border: 1px solid #161f16;
+    border-left: 4px solid var(--verde-primario);
+    padding: 14px;
+    border-radius: 10px;
+    margin-top: 12px;
+}
+
+.contenedor-metadatos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    font-size: 0.85rem;
+    margin-top: 8px;
+    background: #0f140f;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.miniatura-campo {
+    width: 65px;
+    height: 65px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid #202b20;
+}
+
+/* Alertas Sanitarias e Historiales */
+.indicador-alerta {
+    background-color: rgba(245, 158, 11, 0.12);
+    border: 1px solid var(--amarillo-alerta);
+    color: var(--amarillo-alerta);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.controles-accion { display: flex; gap: 8px; margin-top: 12px; }
+
+.btn-accion { flex: 1; padding: 11px; border: none; border-radius: 6px; font-weight: bold; color: white; cursor: pointer; font-size: 0.85rem;}
+.btn-act { background-color: #374151; }
+.btn-eli { background-color: var(--rojo-operativo); }
+
+.capa-modal {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.92); z-index: 2000; justify-content: center; align-items: center;
+}
+
+.capa-modal img { max-width: 92%; max-height: 82%; border-radius: 10px; box-shadow: 0 0 25px var(--verde-primario); }
+
+.notificacion-toast {
+    position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+    padding: 14px 28px; border-radius: 30px; font-weight: bold; z-index: 3000;
+    display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+}
+
+.bandeja-historial {
+    margin-top: 10px;
+    max-height: 130px;
+    overflow-y: auto;
+    font-size: 0.8rem;
+}
+
+.subitem-historial {
+    background: #141b14; padding: 6px; border-radius: 4px; margin-bottom: 4px;
+    border-left: 2px solid var(--azul-caja);
+}
+/* --- DISEÑO DE FILAS DEL HISTORIAL CON BOTÓN DE ELIMINACIÓN ASIGNADO --- */
+.subitem-historial {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    background-color: #141b14;
+    padding: 10px 14px !important;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    border-left: 3px solid var(--azul-caja);
+    width: 100% !important;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Forzar que el texto no empuje al icono hacia afuera */
+.subitem-historial span {
+    font-size: 0.82rem;
+    color: #e5e7eb;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 8px;
+    flex: 1;
+}
+
+/* Estilo del botón del tacho de basura */
+.btn-borrar-historial {
+    color: var(--rojo-operativo) !important;
+    cursor: pointer !important;
+    padding: 8px !important;
+    font-size: 1rem !important;
+    display: inline-block !important;
+    transition: transform 0.2s ease, opacity 0.2s;
+}
+
+.btn-borrar-historial:hover {
+    transform: scale(1.25);
+    opacity: 0.9;
+}
+/* --- BOTÓN DE ELIMINACIÓN NATIVO PARA USO 100% OFFLINE --- */
+.btn-borrar-historial-nativo {
+    background-color: rgba(239, 68, 68, 0.15) !important;
+    color: #ff4d4d !important;
+    border: 1px solid #ef4444 !important;
+    padding: 4px 10px !important;
+    border-radius: 6px !important;
+    font-size: 0.75rem !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    text-transform: uppercase !important;
+    transition: all 0.2s ease;
+    min-width: 60px;
+    text-align: center;
+}
+
+.btn-borrar-historial-nativo:active {
+    background-color: #ef4444 !important;
+    color: white !important;
+}
+
+/* Inventario desplegable (tema oscuro) */
+.desplegable-inventario { background: var(--bg-tarjetas); border: 1px solid var(--verde-institucional); border-radius: 10px; margin: 15px 0; overflow: hidden; }
+.boton-desplegable { padding: 15px; font-size: 1.05rem; font-weight: bold; color: var(--verde-primario); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.boton-desplegable::-webkit-details-marker { display: none; }
+.boton-desplegable::after { content: "\25BC"; font-size: 0.8rem; transition: transform 0.2s ease; }
+.desplegable-inventario[open] .boton-desplegable::after { transform: rotate(180deg); }
+.desplegable-inventario[open] .galeria-animales-vertical { padding: 10px; }

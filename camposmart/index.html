@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampoSmart - Control Ganadero Profesional</title>
+    <!-- Iconografía Premium Profesional -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Motor de Hojas de Cálculo Client-Side -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- Enlace a nuestros estilos limpios por separado -->
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <!-- Encabezado Corporativo e Identidad de Establecimiento -->
+        <!-- Encabezado Corporativo de CampoSmart con Imágenes Locales -->
+    <header>
+        <div class="logo-area">
+            <!-- Imagen del Logo Oficial de la App -->
+            <img src="img/logo.png" alt="Logo CampoSmart" class="logo-app">
+            <h1>Campo<span>Smart</span></h1>
+        </div>
+        
+        <!-- Widget Informativo del Establecimiento de Nelson -->
+        <div class="perfil-usuario">
+            <div class="perfil-info">
+                 <span class="rol">ESTANCIA:</span>
+                <span class="nombre">LA ESTACA</span>
+                <br>
+                <span class="nombre">Nelson Castillo</span>
+            </div>
+            <!-- Imagen de la Foto de Perfil Real de Nelson -->
+            <img src="img/foto.png" alt="Nelson" class="perfil-foto-real">
+        </div>
+    </header>
+
+    <!-- Pestañas de Navegación Ergonómicas -->
+    <nav class="nav-modulos">
+        <button class="tab-trigger active" onclick="rutearFocoModulo('mod-animales')"><i class="fa-solid fa-cow"></i>Animales</button>
+        <button class="tab-trigger" onclick="rutearFocoModulo('mod-categorias')"><i class="fa-solid fa-layer-group"></i>Categorías</button>
+        <button class="tab-trigger" onclick="rutearFocoModulo('mod-sanidad')"><i class="fa-solid fa-prescription-bottle-medical"></i>Sanidad</button>
+        <button class="tab-trigger" onclick="rutearFocoModulo('mod-reproduccion')"><i class="fa-solid fa-heart-pulse"></i>Preñez</button>
+        <button class="tab-trigger" onclick="rutearFocoModulo('mod-finanzas')"><i class="fa-solid fa-chart-line"></i>Finanzas</button>
+    </nav>
+
+    <main>
+        <div id="global-toast" class="notificacion-toast"></div>
+
+        <!-- MÓDULO 1: ANIMALES (Carga de Ganado) -->
+        <section id="mod-animales" class="modulo-contenedor active">
+            <div class="card">
+                <h2><i class="fa-solid fa-clipboard-list"></i> Ficha Física del Ganado</h2>
+                <form id="form-animal">
+                    <input type="hidden" id="edit-id"> <!-- Input clave contra cruces de datos -->
+                    <div class="grid-formulario dual">
+                        <div class="grupo-campo">
+                            <label>Identificador Caravana (Único)*</label>
+                            <input type="text" id="caravana" required placeholder="Ej: CS-1025">
+                        </div>
+                        <div class="grupo-campo">
+                            <label>Categoría Asignada*</label>
+                            <select id="categoria-select" required></select>
+                        </div>
+                        <div class="grupo-campo">
+                            <label>Fotografía Local</label>
+                            <input type="file" id="foto-archivo" accept="image/*">
+                        </div>
+                        <div class="grupo-campo">
+                            <label>Peso Corporal (Kg)</label>
+                            <input type="number" id="peso" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="grupo-campo">
+                            <label>Caravana Madre</label>
+                            <input type="text" id="madre" placeholder="Opcional">
+                        </div>
+                        <div class="grupo-campo">
+                            <label>Caravana Padre</label>
+                            <input type="text" id="padre" placeholder="Opcional">
+                        </div>
+                        <div class="grupo-campo">
+                            <label>Fecha de Nacimiento</label>
+                            <input type="date" id="f-nacimiento">
+                        </div>
+                        <div class="grupo-campo">
+                            <label>Fecha de Parición</label>
+                            <input type="date" id="f-paricion">
+                        </div>
+                    </div>
+                    <div class="grupo-campo" style="margin-top: 12px;">
+                        <label>Observaciones de Campo</label>
+                        <textarea id="observaciones" rows="2" placeholder="Notas adicionales..."></textarea>
+                    </div>
+                    <div style="margin-top:15px; display:flex; gap:10px;">
+                        <button type="button" class="btn btn-cancelar" onclick="abortarFlujoEdicionAnimal()">Limpiar</button>
+                        <button type="submit" class="btn" id="btn-guardar-animal"><i class="fa-solid fa-floppy-disk"></i> Guardar Ficha</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <!-- MÓDULO 2: CATEGORÍAS Y BUSCADOR -->
+        <section id="mod-categorias" class="modulo-contenedor">
+            <div class="card">
+                <h2><i class="fa-solid fa-folder-plus"></i> Nueva Categoría</h2>
+                <div style="display:flex; gap:8px;">
+                    <input type="text" id="nueva-cat-nombre" placeholder="Ej: Ternera Brangus">
+                    <button class="btn" style="width:120px; padding:0;" onclick="crearNuevaCategoriaParametrizable()"><i class="fa-solid fa-plus"></i> Guardar</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fa-solid fa-chart-simple"></i> Resumen Automatizado de Stock</h2>
+                <div id="dashboard-stock" class="grid-dashboard"></div>
+            </div>
+
+
+            <!-- Inventario desplegable: lista todos los animales registrados -->
+            <details class="desplegable-inventario" id="detalle-inventario" ontoggle="if(this.open) cargarInventarioAutomatico()">
+                <summary class="boton-desplegable">Ver todos los animales registrados</summary>
+                <div id="contenedor-galeria-vertical" class="galeria-animales-vertical"></div>
+            </details>
+
+            <div class="card">
+                <h2><i class="fa-solid fa-magnifying-glass-chart"></i> Buscador Avanzado Estricto</h2>
+                <input type="text" id="input-busqueda" placeholder="Buscar por número de caravana..." oninput="filtrarYMostrarAnimalesConHistorial()">
+                <div id="resultados-busqueda-lista"></div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fa-solid fa-file-excel"></i> Exportación del Establecimiento</h2>
+                <button class="btn btn-excel" onclick="exportarLimpiamenteAExcel()"><i class="fa-solid fa-file-arrow-down"></i> Descargar Inventario (.xlsx)</button>
+            </div>
+        </section>
+
+        <!-- MÓDULO 3: SANIDAD Y ALERTAS -->
+        <section id="mod-sanidad" class="modulo-contenedor">
+            <div class="card">
+                <h2><i class="fa-solid fa-hand-holding-medical"></i> Registrar Tratamiento Sanitario</h2>
+                <form id="form-sanidad" class="grid-formulario">
+                    <div class="grupo-campo">
+                        <label>Caravana Vinculada*</label>
+                        <input type="text" id="san-caravana" required placeholder="Caravana del animal">
+                    </div>
+                    <div class="grupo-campo">
+                        <label>Vacuna o Medicamento*</label>
+                        <input type="text" id="san-medicamento" required placeholder="Ej: Aftosa / Triple">
+                    </div>
+                    <div class="grid-formulario dual">
+                        <div class="grupo-campo">
+                            <label>Dosis / Volúmen</label>
+                            <input type="text" id="san-dosis" placeholder="Ej: 2 cc">
+                        </div>
+                        <div class="grupo-campo">
+                            <label>Fecha de Inyección*</label>
+                            <input type="date" id="san-fecha" required>
+                        </div>
+                    </div>
+                    <div class="grupo-campo">
+                        <label>Fecha de Próximo Refuerzo (Alerta Automatizada)</label>
+                        <input type="date" id="san-refuerzo">
+                    </div>
+                    <button type="submit" class="btn" style="margin-top:10px;"><i class="fa-solid fa-syringe"></i> Guardar Evento Sanitario</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- MÓDULO 4: SERVICIOS Y PREÑEZ -->
+        <section id="mod-reproduccion" class="modulo-contenedor">
+            <div class="card">
+                <h2><i class="fa-solid fa-venus"></i> Registro Reproductivo y Diagnóstico</h2>
+                <form id="form-repro" class="grid-formulario">
+                    <div class="grupo-campo">
+                        <label>Caravana de la Hembra*</label>
+                        <input type="text" id="rep-caravana" required placeholder="Ingrese Caravana">
+                    </div>
+                    <div class="grupo-campo">
+                        <label>Modalidad de Servicio*</label>
+                        <select id="rep-tipo">
+                            <option value="Inseminación Artificial">Inseminación Artificial (IA)</option>
+                            <option value="Monta Natural">Monta Natural</option>
+                        </select>
+                    </div>
+                    <div class="grupo-campo">
+                        <label>Fecha de Servicio*</label>
+                        <input type="date" id="rep-fecha" required onchange="calcularPartoBovinoEstimado()">
+                    </div>
+                    <div class="grupo-campo">
+                        <label>Estado de Preñez*</label>
+                        <select id="rep-estado" onchange="calcularPartoBovinoEstimado()">
+                            <option value="Pendiente">Pendiente de Tacto/Eco</option>
+                            <option value="Confirmada">Confirmada Preñada</option>
+                            <option value="Vacia">Confirmada Vacía</option>
+                        </select>
+                    </div>
+                    <div class="grupo-campo">
+                        <label>Fecha Probable de Parto (Cálculo Autónomo - 283 días)</label>
+                        <input type="text" id="rep-fpp" readonly style="background-color:#141a14; color:var(--verde-primario); font-weight:bold;">
+                    </div>
+                    <button type="submit" class="btn" style="margin-top:10px;"><i class="fa-solid fa-baby-carriage"></i> Guardar Registro de Cría</button>
+                </form>
+            </div>
+        </section>
+        <!-- MÓDULOS 5 Y 6: VENTAS Y COMPRAS -->
+        <section id="mod-finanzas" class="modulo-contenedor">
+            <div class="card">
+                <h2><i class="fa-solid fa-scale-balanced"></i> Transacción Comercial</h2>
+                <form id="form-finanzas" class="grid-formulario">
+                    <div class="grupo-campo">
+                        <label>Tipo de Operación Financiera*</label>
+                        <select id="fin-tipo">
+                            <option value="Compra">Compra (Ingreso al Establecimiento)</option>
+                            <option value="Venta">Venta (Baja por Comercialización)</option>
+                        </select>
+                    </div>
+                    <div class="grupo-campo">
+                        <label>Caravana Asociada*</label>
+                        <input type="text" id="fin-caravana" required placeholder="Caravana involucrada">
+                    </div>
+                    <div class="grid-formulario dual">
+                        <div class="grupo-campo">
+                            <label>Fecha Liquidación*</label>
+                            <input type="date" id="fin-fecha" required>
+                        </div>
+                        <div class="grupo-campo">
+                            <label>Monto Económico Total ($)*</label>
+                            <input type="number" id="fin-monto" step="0.01" required placeholder="0.00">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn" style="margin-top:10px;"><i class="fa-solid fa-dollar-sign"></i> Consolidar Operación</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- INTERFAZ MODAL PARA AGRANDAR FOTO A PANTALLA COMPLETA -->
+    <div id="modal-imagen" class="capa-modal" onclick="this.style.display='none'">
+        <img id="img-fullscreen-target" src="" alt="Ficha ampliada">
+    </div>
+
+    <!-- VINCULACIÓN MODULAR DE SCRIPTS JAVASCRIPT POR SEPARADO -->
+    <script src="js/base-datos.js"></script>
+    <script src="js/mod-animales.js"></script>
+    <script src="js/mod-buscador.js"></script>
+    <script src="js/mod-operaciones.js"></script>
+</body>
+</html>
